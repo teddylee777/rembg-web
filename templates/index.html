@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="무료 누끼(배경제거)">
+    <meta name="author" content="테디노트">
+    <meta name="keywords" content="딥러닝 누끼 배경제거 remove background rembg teddynote teddylee777" />
+
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="무료 누끼(배경제거)" />
+    <meta property="og:description" content="무료 누끼(배경제거)" />
+
+    <meta property="og:site_name" content="무료 누끼(배경제거)" />
+    <meta property="og:url" content="http://www.dsschool.co.kr" />
+    <meta property="og:image" content="static/images/teddynote.png" />
+
+
+
+    
+    <link rel="shortcut icon" href="static/images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="static/images/favicon.ico" type="image/x-icon">
+
+    <title>무료 누끼(배경제거)</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+    </script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+
+    <!-- kakao -->
+    <script type="text/JavaScript" src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-F1126H96G0"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'G-F1126H96G0');
+    </script>
+    <style>
+        .container {
+            max-width: 800px;
+        }
+    </style>
+
+</head>
+
+<body class="bg-light">
+
+    <div class="container">
+        <div class="py-5 text-center">
+            <img class="d-block mx-auto mb-4" src="static/images/teddynote.png" alt="" width="72" height="72">
+            <h2>무료 누끼(배경제거) by 테디노트</h2>
+            <p class="lead">딥러닝을 활용하여 이미지 배경 제거 데모 사이트 입니다.</p>
+        </div>
+        <p class="fw-normal">아래는 알파 매팅(Alpha Matting) 튜닝 옵션입니다.</p>
+        <p class="fw-normal">기본 값으로 그냥 두셔도 왠만하면 잘 동작합니다.</p>
+        <p class="fw-bold">분리할 피사체 주변 부위가 잘 분류가 안된다면 배경 임계값을 15~20 정도로 설정해 보세요</p>
+        <hr />
+        <form action="http://braincrew2.iptime.org:9696/" method="post" enctype="multipart/form-data">
+
+            <div class="row">
+                <div class="col-md">
+                    <div class="input-group mb-3">
+                        <div class="input-group mb-3">
+                            <label for="customRange1" class="form-label">전경 임계값(Foreground Threshold)</label>
+                        </div>
+                        <div class="input-group mb-3">
+                            <input type="range" name="af" value="240" min="0" max="240" step="5" class="form-range"
+                                onchange="updateTextInput('textInput1', this.value);">
+                            <input type="text" readonly class="form-control-plaintext" id="textInput1" value="240">
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-md">
+                    <div class="input-group mb-3">
+                        <div class="input-group mb-3">
+                            <label for="customRange1" class="form-label">배경 임계값(Background Threshold)</label>
+                        </div>
+                        <div class="input-group mb-3">
+                            <input type="range" name="ab" value="10" min="0" max="240" step="5" class="form-range"
+                                onchange="updateTextInput('textInput2', this.value);">
+                            <input type="text" readonly class="form-control-plaintext" id="textInput2" value="10">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md">
+                    <div class="input-group mb-3">
+                        <div class="input-group mb-3">
+                            <label for="customRange1" class="form-label">침식 구조 크기(Erode Structure Size)</label>
+                        </div>
+                        <div class="input-group mb-3">
+                            <input type="range" name="ae" value="10" min="0" max="100" class="form-range"
+                                onchange="updateTextInput('textInput3', this.value);">
+                            <input type="text" readonly class="form-control-plaintext" id="textInput3" value="10">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="input-group mb-3">
+                        <div class="input-group mb-3">
+                            <label for="customRange1" class="form-label">기본 크기(Base Size)</label>
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <input type="range" name="az" value="1000" min="0" max="1500" class="form-range"
+                                onchange="updateTextInput('textInput4', this.value);">
+                            <input type="text" readonly class="form-control-plaintext" id="textInput4" value="1000">
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="input-group mb-3">
+                    <div class="input-group mb-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="convertOption" id="option1"
+                                value="option1">
+                            <label class="form-check-label" for="flexRadioDisabled">이미지 URL로 바로 변환</label>
+                        </div>
+                    </div>
+                    <!-- <label for="basic-url" class="form-label mb-2">[1] 이미지 URL로 바로 변환</label> -->
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon3">URL 입력</span>
+                        <input type="text" class="form-control" name="url" id="basic-url" aria-describedby="image-urls">
+                    </div>
+
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group mb-2">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="convertOption" id="option2" value="option2"
+                            checked>
+                        <label class="form-check-label" for="flexRadioDisabled">사진 파일 업로드로 변환</label>
+                    </div>
+
+                </div>
+                <input type="file" class="form-control" name="file" />
+            </div>
+            <hr />
+            <input type="hidden" name="a">
+            <input type="submit" class="form-control btn btn-success" value="변환하기" />
+        </form>
+        <input type="button" class="btn btn-warning mt-5 mb-3" onClick="sendLinkCustom();" value="카카오톡 공유하기" />
+        <hr />
+        <div class="py-3 text-start>
+            <p class=" fw-bold">참고(References)</p>
+            <ol>
+                <li><a href="https://www.youtube.com/watch?v=r29j8u7XwoM" target="_blank">딥러닝을
+                        활용해서 편하게 누끼(배경제거) 따기</a></li>
+                <li><a href="https://github.com/danielgatis/rembg" target="_blank">Rembg GitHub</a>
+                </li>
+                <li><a href="https://arxiv.org/pdf/2005.09007.pdf" target="_blank">논문</a></li>
+                <li><a href="https://github.com/NathanUA/U-2-Net"
+                        target="_blank">https://github.com/NathanUA/U-2-Net</a></li>
+                <li><a href="https://github.com/pymatting/pymatting"
+                        target="_blank">https//github.com/pymatting/pymatting</a></li>
+            </ol>
+        </div>
+    </div>
+    <hr>
+    <footer class="text-muted mt-3">
+        <div class="container">
+            <p>&copy; 테디노트. All Rights Reserved.</p>
+            <p><a href="https://www.youtube.com/channel/UCt2wAAXgm87ACiQnDHQEW6Q" target="_blank">유튜브</a></p>
+            <p><a href="https://teddylee777.github.io/" target="_blank">블로그</a></p>
+            <p>제안: teddynote.ds@gmail.com</p>
+        </div>
+    </footer>
+
+</body>
+<script type="text/javascript">
+    $(function () {
+        Kakao.init("bd282be2ad65a103de4ad88d327fea43");
+    });
+
+    function updateTextInput(_id, val) {
+        document.getElementById(_id).value = val;
+    }
+
+    function sendLinkCustom() {
+        Kakao.Link.sendCustom({
+            templateId: 63365
+        });
+    }
+</script>
+
+</html>
