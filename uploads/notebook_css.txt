@@ -59,7 +59,7 @@
   }
 
   .page__content p {
-      margin: 0 0 0px;
+      margin: 0 0 0px !important;
   }
 
   .page__content p > strong {
