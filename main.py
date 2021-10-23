@@ -67,7 +67,7 @@ def convert_file(filename_, settings):
                             if 'text/html' == key:
                                 v = value
                                 v = [v_.replace('\n', '') for v_ in v]
-                                v.insert(0, '<strong>[출력]</strong>')
+                                # v.insert(0, '<strong>[출력]</strong>')
                                 cells.extend(v)
                                 cells.append('\n')
                                 break
@@ -75,7 +75,7 @@ def convert_file(filename_, settings):
                                 v = value
                                 v = [v_.replace('\n', '') for v_ in v]
                                 v.insert(0, '<pre>')
-                                v.insert(0, '<strong>[출력]</strong>')
+                                # v.insert(0, '<strong>[출력]</strong>')
                                 v.append('</pre>')
                                 cells.extend(v)
                                 break
@@ -85,6 +85,13 @@ def convert_file(filename_, settings):
                                 plain_image = '<img src="data:image/png;base64,' + plain_image.replace('\n','') + '"/>\n'
                                 cells.append(plain_image)
                                 break
+                    elif ('output_type' in output) and (output['output_type'] == 'stream'):
+                        v = output['text']
+                        v = [v_.replace('\n', '') for v_ in v]
+                        v.insert(0, '<pre>')
+                        # v.insert(0, '<strong>[출력]</strong>')
+                        v.append('</pre>')
+                        cells.extend(v)
 
 
             else:
@@ -100,10 +107,16 @@ def convert_file(filename_, settings):
         elif x['cell_type'] == 'markdown':
             cells.extend(x['source'])
             cells.append('\n')
-
+    
+    css = open(os.path.join(app.config['UPLOAD_FOLDER'], 'notebook_css.txt'), 'r').read()
     final_output = f"""---
 {settings}
----\n\n"""
+---
+
+{css}
+
+
+"""
 
     final_output += "\n".join(cells)
 
