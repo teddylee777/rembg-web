@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <!-- Font Awesome -->
+    <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+    rel="stylesheet"
+    />
+    <!-- Google Fonts -->
+    <link
+    href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+    rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
+
+{% endblock %}
+
+{% block content %}
+<div class="py-5 text-center">
+    <img class="d-block mx-auto mb-4" src="static/images/teddynote.png" alt="" width="72" height="72">
+    <h2>주식 패턴 검색기</h2>
+    <p class="lead">과거 패턴을 활용한 미래 주가 예측</p>
+</div>
+<p class="fw-normal"><b>종목 코드</b>를 입력해 주세요. 종목 코드를 모르신다면 <b><a
+    href="https://www.ktb.co.kr/trading/popup/itemPop.jspx" target="_blank">여기</a></b>에서 검색해 주세요.</p>
+<form action="{{ url_for('stock') }}" method="post">
+    <div class="form-group">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">종목 코드</span>
+            </div>
+            {% if code %}
+            <input type="text" class="form-control" placeholder="종목코드 입력" aria-label="Username" value="{{code}}"
+                aria-describedby="basic-addon1" name="code">
+            {% else %}
+            <input type="text" class="form-control" placeholder="종목코드 입력" aria-label="Username" value="035720"
+                aria-describedby="basic-addon1" name="code">
+            {% endif %}
+        </div>
+    </div>
+    <p class="text-left"><b>날짜</b>를 선택해 주세요.</p>
+    <div class="form-group">
+        <div class="row">
+            <div class='col-md-4'>
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">시작일</label>
+                    <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                        {% if startdate %}
+                        <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1"
+                            value="{{startdate}}" name="startdate">
+                        {% else %}
+                        <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1"
+                            value="2021-09-10" name="startdate">
+                        {% endif %}
+                        <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class='col-md-4'>
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">종료일</label>
+                    <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
+                        {% if enddate %}
+                        <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2"
+                            value="{{enddate}}" name="enddate">
+
+                        {% else %}
+                        <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2"
+                            value="2021-10-01" name="enddate">
+                        {% endif %}
+
+                        <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if chart %}
+        <img src="{{ url_for('plot_chart', code=code, startdate=startdate, enddate=enddate) }}" class="img-fluid"
+            alt="Responsive image" />
+        {% endif %}
+    </div>
+    <div class="form-group mb-3">
+        <input type="submit" class="btn btn-info btn-block" name="action" value="차트확인">
+    </div>
+    <div class="form-group mb-3">
+        <input type="submit" class="btn btn-success btn-block" name="action" onclick="LoadingWithMask();" value="패턴검색">
+    </div>
+    <div id="loadingcontainer"></div>
+</form>
+<input type="button" class="btn btn-warning mt-3 mb-3" onClick="sendLinkCustom();" value="카카오톡 공유하기" />
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+
+    $(function () {
+        $('#datetimepicker1').datetimepicker({
+            format: 'YYYY-MM-DD',
+            useCurrent: false
+        });
+        $('#datetimepicker2').datetimepicker({
+            format: 'YYYY-MM-DD',
+            useCurrent: false
+        });
+        $("#datetimepicker1").on("change.datetimepicker", function (e) {
+            $('#datetimepicker2').datetimepicker('minDate', e.date);
+        });
+        $("#datetimepicker2").on("change.datetimepicker", function (e) {
+            $('#datetimepicker1').datetimepicker('maxDate', e.date);
+        });
+    });
+
+    function LoadingWithMask() {
+        //화면의 높이와 너비를 구합니다.
+        var maskHeight = $(document).height();
+        var maskWidth = window.document.body.clientWidth;
+
+        //화면에 출력할 마스크를 설정해줍니다.
+        var mask =
+            "<div id='mask' style='position:absolute; z-index:9000; background-color:#000000; display:none; left:0; top:0;'></div>";
+        var loadingImg = '';
+        loadingImg += "<p class='text-center'><b>패턴 검색 중입니다. 잠시만 기다려 주세요.</b></p>"
+        loadingImg += "<div id='loadingImg'>";
+        loadingImg +=
+            " <img src='https://c.tenor.com/I6kN-6X7nhAAAAAj/loading-buffering.gif' style='position: relative; display: block; margin: 0px auto;'/>";
+        loadingImg += "</div>";
+
+        //화면에 레이어 추가
+        $('body')
+            .append(mask)
+
+        $('#loadingcontainer').append(loadingImg)
+
+        //마스크의 높이와 너비를 화면 것으로 만들어 전체 화면을 채웁니다.
+        $('#mask').css({
+            'width': maskWidth,
+            'height': maskHeight,
+            'opacity': '0.3'
+        });
+
+        //마스크 표시
+        $('#mask').show();
+
+        //로딩중 이미지 표시
+        $('#loadingImg').show();
+    }
+
+    function closeLoadingWithMask() {
+        $('#mask, #loadingImg').hide();
+        $('#mask, #loadingImg').remove();
+    }
+</script>
+{% endblock %}

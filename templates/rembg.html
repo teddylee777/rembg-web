@@ -20,7 +20,7 @@
                 <div class="input-group mb-3">
                     <input type="range" name="af" value="240" min="0" max="240" step="5" class="form-range"
                         onchange="updateTextInput('textInput1', this.value);">
-                    <input type="text" readonly class="form-control-plaintext" id="textInput1" value="240">
+                    <input type="text" readonly class="form-control-plaintext ml-3" id="textInput1" value="240">
                 </div>
             </div>
 
@@ -34,7 +34,7 @@
                 <div class="input-group mb-3">
                     <input type="range" name="ab" value="10" min="0" max="240" step="5" class="form-range"
                         onchange="updateTextInput('textInput2', this.value);">
-                    <input type="text" readonly class="form-control-plaintext" id="textInput2" value="10">
+                    <input type="text" readonly class="form-control-plaintext ml-3" id="textInput2" value="10">
                 </div>
             </div>
         </div>
@@ -48,7 +48,7 @@
                 <div class="input-group mb-3">
                     <input type="range" name="ae" value="10" min="0" max="100" class="form-range"
                         onchange="updateTextInput('textInput3', this.value);">
-                    <input type="text" readonly class="form-control-plaintext" id="textInput3" value="10">
+                    <input type="text" readonly class="form-control-plaintext ml-3" id="textInput3" value="10">
                 </div>
             </div>
         </div>
@@ -61,56 +61,57 @@
                 <div class="input-group mb-3">
                     <input type="range" name="az" value="1000" min="0" max="1500" class="form-range"
                         onchange="updateTextInput('textInput4', this.value);">
-                    <input type="text" readonly class="form-control-plaintext" id="textInput4" value="1000">
+                    <input type="text" readonly class="form-control-plaintext ml-3" id="textInput4" value="1000">
                 </div>
             </div>
         </div>
-        <hr />
+    </div>
+    <hr />
+    <div class="input-group mb-3">
+        <div class="input-group mb-2">
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="convertOption" id="option1" value="option1">
+                <label class="form-check-label" for="flexRadioDisabled">이미지 URL로 바로 변환</label>
+            </div>
+        </div>
+        <!-- <label for="basic-url" class="form-label mb-2">[1] 이미지 URL로 바로 변환</label> -->
         <div class="input-group mb-3">
-            <div class="input-group mb-2">
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="convertOption" id="option1"
-                        value="option1">
-                    <label class="form-check-label" for="flexRadioDisabled">이미지 URL로 바로 변환</label>
-                </div>
-            </div>
-            <!-- <label for="basic-url" class="form-label mb-2">[1] 이미지 URL로 바로 변환</label> -->
-            <div class="input-group mb-3">
+            <div class="input-group-prepend">
                 <span class="input-group-text" id="basic-addon3">URL 입력</span>
-                <input type="text" class="form-control" name="url" id="basic-url" aria-describedby="image-urls">
             </div>
-
+            <!-- <span class="input-group-text" id="basic-addon3">URL 입력</span> -->
+            <input type="text" class="form-control" name="url" id="basic-url" aria-describedby="image-urls">
         </div>
     </div>
     <div class="input-group mb-3">
         <div class="input-group mb-2">
             <div class="form-check">
-                <input class="form-check-input" type="radio" name="convertOption" id="option2" value="option2"
-                    checked>
+                <input class="form-check-input" type="radio" name="convertOption" id="option2" value="option2" checked>
                 <label class="form-check-label" for="flexRadioDisabled">사진 파일 업로드로 변환</label>
             </div>
-
         </div>
-        <input type="file" class="form-control" name="file" />
+        <div class="btn btn-primary btn-sm float-left">
+            <input type="file" name="file">
+        </div>
     </div>
+
     <hr />
     <input type="hidden" name="a">
     <input type="submit" class="form-control btn btn-success" value="변환하기" />
 </form>
-<input type="button" class="btn btn-warning mt-5 mb-3" onClick="sendLinkCustom();" value="카카오톡 공유하기" />
+<input type="button" class="btn btn-warning mt-3 mb-3" onClick="sendLinkCustom();" value="카카오톡 공유하기" />
 <hr />
-<div class="py-3 text-start>
-    <p class=" fw-bold">참고(References)</p>
+<div class="py-3 text-start">
+    <p class="fw-bold">참고(References)</p>
     <ol>
         <li><a href="https://www.youtube.com/watch?v=r29j8u7XwoM" target="_blank">딥러닝을
                 활용해서 편하게 누끼(배경제거) 따기</a></li>
         <li><a href="https://github.com/danielgatis/rembg" target="_blank">Rembg GitHub</a>
         </li>
         <li><a href="https://arxiv.org/pdf/2005.09007.pdf" target="_blank">논문</a></li>
-        <li><a href="https://github.com/NathanUA/U-2-Net"
-                target="_blank">https://github.com/NathanUA/U-2-Net</a></li>
-        <li><a href="https://github.com/pymatting/pymatting"
-                target="_blank">https//github.com/pymatting/pymatting</a></li>
+        <li><a href="https://github.com/NathanUA/U-2-Net" target="_blank">https://github.com/NathanUA/U-2-Net</a></li>
+        <li><a href="https://github.com/pymatting/pymatting" target="_blank">https//github.com/pymatting/pymatting</a>
+        </li>
     </ol>
 </div>
 </div>
