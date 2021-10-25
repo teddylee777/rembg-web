@@ -1,5 +1,6 @@
-from flask import Flask, render_template, request, flash, redirect, url_for, Response
+from flask import Flask, render_template, request, flash, redirect, url_for, Response, send_from_directory
 from flask.helpers import send_file
+from flask_sitemap import Sitemap
 from werkzeug.utils import secure_filename
 
 from io import StringIO, BytesIO
@@ -21,9 +22,33 @@ import pattern as pt
 UPLOAD_FOLDER = './uploads'
 ALLOWED_EXTENSIONS = {'ipynb'}
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+# Sitemap & robots.txt 설정
+ext = Sitemap(app=app)
+
+@ext.register_generator
+def index():
+    yield 'index', {}
+
+@ext.register_generator
+def convert():
+    yield 'convert', {} 
+
+@ext.register_generator
+def stock():
+    yield 'stock', {} 
+
+@ext.register_generator
+def rembg():
+    yield 'rembg', {} 
+
+@app.route('/robots.txt')
+def static_from_root():
+    return send_from_directory(app.static_folder, request.path[1:])
+
+# route 설정
 @app.route('/', methods=['GET', 'POST'])
 def index():
     return render_template('index.html')
